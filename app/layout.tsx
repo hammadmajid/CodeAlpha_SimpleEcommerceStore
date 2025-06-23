@@ -4,6 +4,8 @@ import { Roboto } from "next/font/google";
 import { ThemeProvider } from "@mui/material/styles";
 import theme from "@/utils/theme";
 import CssBaseline from "@mui/material/CssBaseline";
+import Header from "@/components/header";
+import { ClerkProvider } from "@clerk/nextjs";
 
 const roboto = Roboto({
 	weight: ["300", "400", "500", "700"],
@@ -27,10 +29,11 @@ export default function RootLayout({
 			<body>
 				<AppRouterCacheProvider>
 					<ThemeProvider theme={theme}>
-						<>
-							<CssBaseline />
+						<CssBaseline />
+						<ClerkProvider>
+							<Header />
 							{children}
-						</>
+						</ClerkProvider>
 					</ThemeProvider>
 				</AppRouterCacheProvider>
 			</body>
