@@ -7,68 +7,51 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import InputBase from "@mui/material/InputBase";
 import Button from "@mui/material/Button";
-import { styled, alpha } from "@mui/material/styles";
 import SearchIcon from "@mui/icons-material/Search";
-import {
-	SignInButton,
-	SignedIn,
-	SignedOut,
-	UserButton,
-} from "@clerk/nextjs";
-
-const Search = styled("div")(({ theme }) => ({
-	position: "relative",
-	borderRadius: theme.shape.borderRadius,
-	backgroundColor: alpha(theme.palette.common.white, 0.15),
-	"&:hover": {
-		backgroundColor: alpha(theme.palette.common.white, 0.25),
-	},
-	marginRight: theme.spacing(2),
-	marginLeft: 0,
-	width: "100%",
-	[theme.breakpoints.up("sm")]: {
-		width: "250px",
-	},
-}));
-
-const SearchIconWrapper = styled("div")(({ theme }) => ({
-	padding: theme.spacing(0, 2),
-	height: "100%",
-	position: "absolute",
-	pointerEvents: "none",
-	display: "flex",
-	alignItems: "center",
-	justifyContent: "center",
-}));
-
-const StyledInputBase = styled(InputBase)(({ theme }) => ({
-	color: "inherit",
-	width: "100%",
-	"& .MuiInputBase-input": {
-		padding: theme.spacing(1, 1, 1, 0),
-		// vertical padding + font size from searchIcon
-		paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-		transition: theme.transitions.create("width"),
-		width: "100%",
-	},
-}));
+import { SignInButton, SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
 
 const Header: React.FC = () => (
 	<AppBar position="static">
-		<Toolbar>
-			<Typography variant="h6" noWrap sx={{ flexGrow: 1 }}>
-				prepen
+		<Toolbar sx={{ padding: "16px 24px", minHeight: "80px" }}>
+			<Typography variant="h6" noWrap sx={{ flexGrow: 1, fontWeight: 900, fontSize: "1.5rem" }}>
+				PREPEN
 			</Typography>
 			<Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
-				<Search>
-					<SearchIconWrapper>
-						<SearchIcon />
-					</SearchIconWrapper>
-					<StyledInputBase
-						placeholder="Search products"
-						inputProps={{ "aria-label": "search" }}
+				<Box
+					sx={{
+						position: "relative",
+						width: { xs: "200px", sm: "300px" },
+						display: "flex",
+						alignItems: "center"
+					}}
+				>
+					<SearchIcon
+						sx={{
+							position: "absolute",
+							left: "12px",
+							zIndex: 1,
+							color: "#000000"
+						}}
 					/>
-				</Search>
+					<InputBase
+						placeholder="SEARCH PRODUCTS..."
+						inputProps={{ "aria-label": "search" }}
+						sx={{
+							width: "100%",
+							paddingLeft: "48px !important",
+							color: "#000000",
+							fontWeight: 600,
+							textTransform: "uppercase",
+							fontSize: "0.9rem",
+							"& input::placeholder": {
+								color: "#666666",
+								opacity: 1,
+								textTransform: "uppercase",
+								fontWeight: 600,
+							}
+						}}
+					/>
+				</Box>
 				<SignedOut>
 					<SignInButton>
 						<Button variant="contained" color="secondary">
