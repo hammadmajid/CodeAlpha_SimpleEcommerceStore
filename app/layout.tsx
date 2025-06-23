@@ -15,7 +15,7 @@ const roboto = Roboto({
 });
 
 export const metadata: Metadata = {
-	title: "PrePen",
+	title: "PREPEN",
 	description: "A school supplies store.",
 };
 
