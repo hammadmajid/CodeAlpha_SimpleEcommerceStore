@@ -32,6 +32,9 @@ importers:
       '@mui/material-nextjs':
         specifier: ^7.1.1
         version: 7.1.1(@emotion/cache@11.14.0)(@emotion/react@11.14.0(@types/react@19.1.8)(react@19.1.0))(@types/react@19.1.8)(next@15.3.4(@babel/core@7.27.4)(react-dom@19.1.0(react@19.1.0))(react@19.1.0))(react@19.1.0)
+      '@portabletext/react':
+        specifier: ^3.2.1
+        version: 3.2.1(react@19.1.0)
       '@prisma/client':
         specifier: 6.10.1
         version: 6.10.1(prisma@6.10.1(typescript@5.8.3))(typescript@5.8.3)
