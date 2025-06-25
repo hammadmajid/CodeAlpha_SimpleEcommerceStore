@@ -30,12 +30,13 @@ async function getProduct(slug: string): Promise<Product | null> {
     return await client.fetch(PRODUCT_BY_SLUG_QUERY, { slug });
 }
 
-interface ProductPageProps {
-    params: { slug: string };
-}
-
-export default async function ProductPage({ params }: ProductPageProps) {
-    const product = await getProduct(params.slug);
+export default async function ProductPage({
+    params,
+}: {
+    params: Promise<{ slug: string }>
+}) {
+    const { slug } = await params;
+    const product = await getProduct(slug);
 
     if (!product) {
         notFound();
@@ -280,8 +281,13 @@ export default async function ProductPage({ params }: ProductPageProps) {
 }
 
 // Generate metadata for SEO
-export async function generateMetadata({ params }: ProductPageProps) {
-    const product = await getProduct(params.slug);
+export async function generateMetadata({
+    params,
+}: {
+    params: Promise<{ slug: string }>
+}) {
+    const { slug } = await params;
+    const product = await getProduct(slug);
 
     if (!product) {
         return {
