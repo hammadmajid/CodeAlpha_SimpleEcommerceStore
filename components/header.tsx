@@ -9,12 +9,21 @@ import InputBase from "@mui/material/InputBase";
 import Button from "@mui/material/Button";
 import SearchIcon from "@mui/icons-material/Search";
 import { SignInButton, SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
+import Link from "next/link";
 
 const Header: React.FC = () => (
 	<AppBar position="static">
 		<Toolbar sx={{ padding: "16px 24px", minHeight: "80px" }}>
 			<Typography variant="h6" noWrap sx={{ flexGrow: 1, fontWeight: 900, fontSize: "1.5rem" }}>
-				PREPEN
+				<Link
+					href="/"
+					style={{
+						textDecoration: "none",
+						color: "inherit",
+					}}
+				>
+					PREPEN
+				</Link>
 			</Typography>
 			<Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
 				<Box
