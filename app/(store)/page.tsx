@@ -1,4 +1,3 @@
-// app/products/page.tsx
 import {
 	Container,
 	Typography,

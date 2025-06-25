@@ -13,7 +13,6 @@ import {
     TableContainer,
     TableRow,
     Paper,
-    Breadcrumbs,
     ImageList,
     ImageListItem
 } from '@mui/material';
@@ -44,24 +43,15 @@ export default async function ProductPage({
 
     return (
         <Container maxWidth="lg" sx={{ py: 4 }}>
-            {/* Breadcrumbs */}
-            <Breadcrumbs sx={{ mb: 3 }}>
-                <Link href="/products" style={{ textDecoration: 'none' }}>
-                    <Typography color="primary" sx={{ '&:hover': { textDecoration: 'underline' } }}>
-                        Products
-                    </Typography>
-                </Link>
-                <Typography color="text.primary">{product.name}</Typography>
-            </Breadcrumbs>
             {/* Back Button */}
             <Box sx={{ mb: 3 }}>
-                <Link href="/products" passHref>
+                <Link href="/" passHref>
                     <Button
                         startIcon={<ArrowBack />}
                         variant="outlined"
                         sx={{ textTransform: 'none' }}
                     >
-                        Back to Products
+                        Back to Home
                     </Button>
                 </Link>
             </Box>
