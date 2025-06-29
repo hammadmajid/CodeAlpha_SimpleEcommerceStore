@@ -5,14 +5,6 @@ import { PRODUCT_BY_SLUG_QUERY, PRODUCTS_QUERY } from "@/lib/queries";
 import { Product } from "@/types/product";
 
 export const inventoryRouter = createTRPCRouter({
-    hello: publicProcedure
-        .input(z.object({ text: z.string() }))
-        .query(({ input }) => {
-            return {
-                greeting: `Hello ${input.text}`,
-            };
-        }),
-
     getBySlug: publicProcedure.input(z.string()).query(
         async ({ ctx, input }): Promise<Product> => {
             return await ctx.client.fetch(PRODUCT_BY_SLUG_QUERY, { input })
