@@ -68,11 +68,11 @@ export default function SingleProduct({ product }: SingleProductProps) {
                             {/* Thumbnail Images */}
                             {product.images.length > 1 && (
                                 <ImageList cols={4} gap={8}>
-                                    {product.images.slice(1).map((image, index) => (
-                                        <ImageListItem key={index}>
+                                    {product.images.slice(1).map((image) => (
+                                        <ImageListItem key={image._key}>
                                             <img
                                                 src={urlFor(image).width(150).height(150).url()}
-                                                alt={image.alt || `${product.name} ${index + 2}`}
+                                                alt={image.alt || `${product.name} ${image._key}`}
                                                 style={{
                                                     width: '100%',
                                                     height: 100,
@@ -151,8 +151,8 @@ export default function SingleProduct({ product }: SingleProductProps) {
                                 <TableContainer component={Paper} variant="outlined">
                                     <Table size="small">
                                         <TableBody>
-                                            {product.specifications.map((spec, index) => (
-                                                <TableRow key={index}>
+                                            {product.specifications.map((spec) => (
+                                                <TableRow key={spec._key}>
                                                     <TableCell sx={{ fontWeight: 500 }}>{spec.name}</TableCell>
                                                     <TableCell>{spec.value}</TableCell>
                                                 </TableRow>
@@ -226,9 +226,9 @@ export default function SingleProduct({ product }: SingleProductProps) {
                         Available Variants
                     </Typography>
                     <Grid container spacing={2}>
-                        {product.variants.map((variant, index) => (
+                        {product.variants.map((variant) => (
                             <Grid
-                                key={index}
+                                key={variant._key}
                                 size={{
                                     xs: 12,
                                     sm: 6,
@@ -248,7 +248,7 @@ export default function SingleProduct({ product }: SingleProductProps) {
                                             {variant.name}
                                         </Typography>
                                         <Typography variant="h6" color="primary" sx={{ fontWeight: 600 }}>
-                                            ${variant.price.toFixed(2)}
+                                            ${variant.price?.toFixed(2)}
                                         </Typography>
                                     </Box>
                                 </Card>
