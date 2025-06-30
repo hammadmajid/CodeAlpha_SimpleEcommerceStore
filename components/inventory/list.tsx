@@ -11,11 +11,10 @@ import {
 } from '@mui/material';
 import Link from 'next/link';
 import { urlFor } from '@/sanity/lib/image';
-
-import type { PRODUCTS_QUERYResult } from '@/sanity/types';
+import type { RouterOutputs } from '@/trpc/react';
 
 interface ProdutctListProps {
-    products: PRODUCTS_QUERYResult;
+    products: RouterOutputs["inventory"]["getAll"];
 }
 
 export default function ProdutctList({ products }: ProdutctListProps) {

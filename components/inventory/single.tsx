@@ -20,11 +20,11 @@ import { ArrowBack, ShoppingCart } from '@mui/icons-material';
 import Link from 'next/link';
 import { urlFor } from '@/sanity/lib/image';
 import { PortableText } from '@portabletext/react';
-import type { PRODUCT_BY_SLUG_QUERYResult } from '@/sanity/types';
 import { notFound } from 'next/navigation';
+import type { RouterOutputs } from '@/trpc/react';
 
 interface SingleProductProps {
-    product: PRODUCT_BY_SLUG_QUERYResult
+    product: RouterOutputs["inventory"]["getBySlug"]
 }
 
 export default function SingleProduct({ product }: SingleProductProps) {
