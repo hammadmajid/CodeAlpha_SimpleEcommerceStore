@@ -6,6 +6,7 @@ import theme from "@/utils/theme";
 import CssBaseline from "@mui/material/CssBaseline";
 import Header from "@/components/header";
 import { ClerkProvider } from "@clerk/nextjs";
+import { TRPCReactProvider } from "@/trpc/react";
 
 const roboto = Roboto({
 	weight: ["300", "400", "500", "700"],
@@ -31,8 +32,10 @@ export default function RootLayout({
 					<ThemeProvider theme={theme}>
 						<CssBaseline />
 						<ClerkProvider>
-							<Header />
-							{children}
+							<TRPCReactProvider>
+								<Header />
+								{children}
+							</TRPCReactProvider>
 						</ClerkProvider>
 					</ThemeProvider>
 				</AppRouterCacheProvider>

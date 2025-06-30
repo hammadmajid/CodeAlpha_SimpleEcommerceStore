@@ -1,5 +1,7 @@
-// lib/queries.ts
-export const PRODUCTS_QUERY = `*[_type == "product"] | order(_createdAt desc) {
+import { defineQuery } from "next-sanity";
+
+const PRODUCTS_QUERY =
+	defineQuery(`*[_type == "product"] | order(_createdAt desc) {
   _id,
   name,
   slug,
@@ -14,9 +16,10 @@ export const PRODUCTS_QUERY = `*[_type == "product"] | order(_createdAt desc) {
   featured,
   weight,
   dimensions
-}`;
+}`);
 
-export const PRODUCT_BY_SLUG_QUERY = `*[_type == "product" && slug.current == $slug][0] {
+const PRODUCT_BY_SLUG_QUERY =
+	defineQuery(`*[_type == "product" && slug.current == $slug][0] {
   _id,
   name,
   slug,
@@ -34,9 +37,10 @@ export const PRODUCT_BY_SLUG_QUERY = `*[_type == "product" && slug.current == $s
   featured,
   weight,
   dimensions
-}`;
+}`);
 
-export const FEATURED_PRODUCTS_QUERY = `*[_type == "product" && featured == true] | order(_createdAt desc) {
+const FEATURED_PRODUCTS_QUERY =
+	defineQuery(`*[_type == "product" && featured == true] | order(_createdAt desc) {
   _id,
   name,
   slug,
@@ -49,4 +53,6 @@ export const FEATURED_PRODUCTS_QUERY = `*[_type == "product" && featured == true
     slug
   },
   featured
-}`;
+}`);
+
+export { PRODUCTS_QUERY, PRODUCT_BY_SLUG_QUERY, FEATURED_PRODUCTS_QUERY };
