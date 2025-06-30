@@ -7,7 +7,7 @@ export default async function ProductPage({
     params: Promise<{ slug: string }>
 }) {
     const { slug } = await params;
-    const product = await api.inventory.getBySlug(slug);
+    const product = await api.inventory.getBySlug({ slug });
 
     return <SingleProduct product={product} />
 }
@@ -18,7 +18,7 @@ export async function generateMetadata({
     params: Promise<{ slug: string }>
 }) {
     const { slug } = await params;
-    const product = await api.inventory.getBySlug(slug);
+    const product = await api.inventory.getBySlug({slug});
 
     if (!product) {
         return {
