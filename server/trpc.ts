@@ -6,7 +6,7 @@ import { client } from '@/sanity/lib/client';
 
 export const createTRPCContext = async (opts: { headers: Headers }) => {
     return {
-        client,
+        sanity: client,
         db,
         ...opts,
     };
