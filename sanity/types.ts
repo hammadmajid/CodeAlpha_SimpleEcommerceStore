@@ -378,7 +378,7 @@ export type FEATURED_PRODUCTS_QUERYResult = Array<{
 
 // Query TypeMap
 import "@sanity/client";
-declare module "@sanity/client" {
+declare module "@/sanity/lib/client" {
   interface SanityQueries {
     "*[_type == \"product\"] | order(_createdAt desc) {\n  _id,\n  name,\n  slug,\n  description,\n  images,\n  price,\n  category->{\n    _id,\n    name,\n    slug\n  },\n  featured,\n  weight,\n  dimensions\n}": PRODUCTS_QUERYResult;
     "*[_type == \"product\" && slug.current == $slug][0] {\n  _id,\n  name,\n  slug,\n  description,\n  detailedDescription,\n  images,\n  price,\n  category->{\n    _id,\n    name,\n    slug\n  },\n  specifications,\n  variants,\n  featured,\n  weight,\n  dimensions\n}": PRODUCT_BY_SLUG_QUERYResult;
