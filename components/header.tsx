@@ -14,7 +14,11 @@ import Link from "next/link";
 const Header: React.FC = () => (
 	<AppBar position="static">
 		<Toolbar sx={{ padding: "16px 24px", minHeight: "80px" }}>
-			<Typography variant="h6" noWrap sx={{ flexGrow: 1, fontWeight: 900, fontSize: "1.5rem" }}>
+			<Typography
+				variant="h6"
+				noWrap
+				sx={{ flexGrow: 1, fontWeight: 900, fontSize: "1.5rem" }}
+			>
 				<Link
 					href="/"
 					style={{
@@ -31,7 +35,7 @@ const Header: React.FC = () => (
 						position: "relative",
 						width: { xs: "200px", sm: "300px" },
 						display: "flex",
-						alignItems: "center"
+						alignItems: "center",
 					}}
 				>
 					<SearchIcon
@@ -39,7 +43,7 @@ const Header: React.FC = () => (
 							position: "absolute",
 							left: "12px",
 							zIndex: 1,
-							color: "#000000"
+							color: "#000000",
 						}}
 					/>
 					<InputBase
@@ -57,7 +61,7 @@ const Header: React.FC = () => (
 								opacity: 1,
 								textTransform: "uppercase",
 								fontWeight: 600,
-							}
+							},
 						}}
 					/>
 				</Box>

@@ -1,6 +1,7 @@
 import { defineQuery } from "next-sanity";
 
-const PRODUCTS_QUERY = defineQuery(`*[_type == "product"] | order(_createdAt desc) {
+const PRODUCTS_QUERY =
+	defineQuery(`*[_type == "product"] | order(_createdAt desc) {
   _id,
   name,
   slug,
@@ -17,7 +18,8 @@ const PRODUCTS_QUERY = defineQuery(`*[_type == "product"] | order(_createdAt des
   dimensions
 }`);
 
-const PRODUCT_BY_SLUG_QUERY = defineQuery(`*[_type == "product" && slug.current == $slug][0] {
+const PRODUCT_BY_SLUG_QUERY =
+	defineQuery(`*[_type == "product" && slug.current == $slug][0] {
   _id,
   name,
   slug,
@@ -37,7 +39,8 @@ const PRODUCT_BY_SLUG_QUERY = defineQuery(`*[_type == "product" && slug.current 
   dimensions
 }`);
 
-const FEATURED_PRODUCTS_QUERY = defineQuery(`*[_type == "product" && featured == true] | order(_createdAt desc) {
+const FEATURED_PRODUCTS_QUERY =
+	defineQuery(`*[_type == "product" && featured == true] | order(_createdAt desc) {
   _id,
   name,
   slug,
