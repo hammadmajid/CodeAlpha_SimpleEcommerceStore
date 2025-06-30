@@ -1,5 +1,3 @@
-"use client";
-
 import {
     Typography,
     Grid,
@@ -14,11 +12,13 @@ import {
 import Link from 'next/link';
 import { urlFor } from '@/sanity/lib/image';
 
-import { api } from "@/trpc/react";
+import type { PRODUCTS_QUERYResult } from '@/sanity/types';
 
-export default function ProdutctList() {
-    const [products] = api.inventory.getAll.useSuspenseQuery();
+interface ProdutctListProps {
+    products: PRODUCTS_QUERYResult;
+}
 
+export default function ProdutctList({ products }: ProdutctListProps) {
     return (
         <Grid container spacing={3}>
             {products.map((product) => (
