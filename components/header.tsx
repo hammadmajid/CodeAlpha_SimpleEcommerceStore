@@ -78,7 +78,22 @@ const Header: React.FC = () => (
 					</SignInButton>
 				</SignedOut>
 				<SignedIn>
-					<UserButton />
+					<UserButton
+						appearance={{
+							elements: {
+								avatarBox: {
+									borderRadius: 0,
+									border: "2px solid #000",
+									boxShadow: "4px 4px 0 #000",
+									fontWeight: 900,
+									width: "48px",
+									height: "48px",
+									minWidth: "48px",
+									minHeight: "48px",
+								},
+							},
+						}}
+					/>
 				</SignedIn>
 			</Box>
 		</Toolbar>
