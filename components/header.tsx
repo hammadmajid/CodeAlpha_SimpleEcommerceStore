@@ -33,7 +33,7 @@ const Header: React.FC = () => (
 					sx={{
 						position: "relative",
 						width: { xs: "200px", sm: "300px" },
-						display: "flex",
+						display: { xs: "none", sm: "flex" },
 						alignItems: "center",
 					}}
 				>
