@@ -7,6 +7,7 @@ import CssBaseline from "@mui/material/CssBaseline";
 import Header from "@/components/header";
 import { ClerkProvider } from "@clerk/nextjs";
 import { TRPCReactProvider } from "@/trpc/react";
+import { neobrutalism } from "@clerk/themes";
 
 const roboto = Roboto({
 	weight: ["300", "400", "500", "700"],
@@ -31,7 +32,15 @@ export default function RootLayout({
 				<AppRouterCacheProvider>
 					<ThemeProvider theme={theme}>
 						<CssBaseline />
-						<ClerkProvider>
+						<ClerkProvider
+							appearance={{
+								baseTheme: neobrutalism,
+								variables: {
+									borderRadius: "0px",
+									colorPrimary: "#FF6B35",
+								},
+							}}
+						>
 							<TRPCReactProvider>
 								<Header />
 								{children}

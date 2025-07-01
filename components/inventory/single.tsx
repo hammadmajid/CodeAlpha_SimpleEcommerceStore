@@ -16,12 +16,13 @@ import {
 	ImageList,
 	ImageListItem,
 } from "@mui/material";
-import { ArrowBack, ShoppingCart } from "@mui/icons-material";
 import Link from "next/link";
 import { urlFor } from "@/sanity/lib/image";
 import { PortableText } from "@portabletext/react";
 import { notFound } from "next/navigation";
 import type { RouterOutputs } from "@/trpc/react";
+import { ShoppingCartSimpleIcon } from "@phosphor-icons/react/dist/ssr/ShoppingCartSimple";
+import { ArrowLeftIcon } from "@phosphor-icons/react/dist/ssr/ArrowLeft";
 
 interface SingleProductProps {
 	product: RouterOutputs["inventory"]["getBySlug"];
@@ -38,7 +39,7 @@ export default function SingleProduct({ product }: SingleProductProps) {
 			<Box sx={{ mb: 3 }}>
 				<Link href="/" passHref>
 					<Button
-						startIcon={<ArrowBack />}
+						startIcon={<ArrowLeftIcon weight="bold" />}
 						variant="outlined"
 						sx={{ textTransform: "none" }}
 					>
@@ -134,7 +135,7 @@ export default function SingleProduct({ product }: SingleProductProps) {
 						<Button
 							variant="contained"
 							size="large"
-							startIcon={<ShoppingCart />}
+							startIcon={<ShoppingCartSimpleIcon weight="bold" />}
 							sx={{
 								mb: 4,
 								py: 1.5,
