@@ -9,6 +9,7 @@ import {
 	Chip,
 	Box,
 } from "@mui/material";
+import { ShoppingCartSimpleIcon } from "@phosphor-icons/react/dist/ssr/ShoppingCartSimple";
 import Link from "next/link";
 import { urlFor } from "@/sanity/lib/image";
 import type { RouterOutputs } from "@/trpc/react";
@@ -27,7 +28,7 @@ export default function ProdutctList({ products }: ProdutctListProps) {
 						xs: 12,
 						sm: 6,
 						md: 4,
-						lg: 3
+						lg: 3,
 					}}
 					display="flex"
 					justifyContent="center"
@@ -60,10 +61,7 @@ export default function ProdutctList({ products }: ProdutctListProps) {
 								<CardMedia
 									component="img"
 									height="250"
-									image={urlFor(product.images[0])
-										.width(400)
-										.height(250)
-										.url()}
+									image={urlFor(product.images[0]).width(400).height(250).url()}
 									alt={product.images[0].alt || product.name}
 									sx={{ objectFit: "cover" }}
 								/>
@@ -131,6 +129,7 @@ export default function ProdutctList({ products }: ProdutctListProps) {
 								color="primary"
 								fullWidth
 								sx={{ textTransform: "none", fontWeight: 500 }}
+								startIcon={<ShoppingCartSimpleIcon weight="bold" />}
 							>
 								Add to Cart
 							</Button>

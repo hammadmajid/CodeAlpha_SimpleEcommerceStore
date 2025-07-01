@@ -1,15 +1,14 @@
-"use client";
-
-import type React from "react";
+import { SignInButton, SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import InputBase from "@mui/material/InputBase";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
-import InputBase from "@mui/material/InputBase";
-import Button from "@mui/material/Button";
-import SearchIcon from "@mui/icons-material/Search";
-import { SignInButton, SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
+import { MagnifyingGlassIcon } from "@phosphor-icons/react/dist/ssr/MagnifyingGlass";
+import { SignInIcon } from "@phosphor-icons/react/dist/ssr/SignIn";
 import Link from "next/link";
+import type React from "react";
 
 const Header: React.FC = () => (
 	<AppBar position="static">
@@ -38,12 +37,14 @@ const Header: React.FC = () => (
 						alignItems: "center",
 					}}
 				>
-					<SearchIcon
-						sx={{
+					<MagnifyingGlassIcon
+						size={24}
+						weight="bold"
+						color="#000"
+						style={{
 							position: "absolute",
 							left: "12px",
 							zIndex: 1,
-							color: "#000000",
 						}}
 					/>
 					<InputBase
@@ -67,7 +68,11 @@ const Header: React.FC = () => (
 				</Box>
 				<SignedOut>
 					<SignInButton>
-						<Button variant="contained" color="secondary">
+						<Button
+							variant="contained"
+							color="secondary"
+							startIcon={<SignInIcon weight="bold" />}
+						>
 							Sign In
 						</Button>
 					</SignInButton>
