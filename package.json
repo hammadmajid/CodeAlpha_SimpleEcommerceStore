@@ -8,7 +8,7 @@
 		"start": "next start",
 		"lint": "next lint",
 		"prisma:gen": "prisma generate",
-		"presma:push": "prisma push",
+		"prisma:push": "prisma db push",
 		"sanity:extract": "sanity schema extract --enforce-required-fields --path sanity/schema.json",
 		"sanity:typegen": "sanity typegen generate"
 	},
