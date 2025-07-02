@@ -1,12 +1,12 @@
 "use client";
 
-import type { Cart } from "@/lib/cart";
+import type { Item } from "@/lib/cart";
 import { useState, useEffect, useCallback } from "react";
 
 const STORAGE_KEY = "guest_cart";
 
 export function useGuestCart() {
-	const [cart, setCart] = useState<Cart[]>(() => {
+	const [cart, setCart] = useState<Item[]>(() => {
 		if (typeof window === "undefined") return [];
 		const stored = localStorage.getItem(STORAGE_KEY);
 		return stored ? JSON.parse(stored) : [];
@@ -21,7 +21,7 @@ export function useGuestCart() {
 		0,
 	);
 
-	const addItem = useCallback((item: Cart) => {
+	const addItem = useCallback((item: Item) => {
 		setCart((prev) => {
 			const idx = prev.findIndex(
 				(i) =>

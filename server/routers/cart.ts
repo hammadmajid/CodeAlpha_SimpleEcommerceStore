@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 import { createTRPCRouter, publicProcedure } from "@/server/trpc";
-import { cartSchema } from "@/lib/cart";
+import { itemSchema } from "@/lib/cart";
 
 export const cartRouter = createTRPCRouter({
 	getItemsCount: publicProcedure
@@ -33,9 +33,15 @@ export const cartRouter = createTRPCRouter({
 		}),
 
 	insertItem: publicProcedure
-		.input(cartSchema)
+		.input(
+			z.object({
+				userId: z.string(),
+				item: itemSchema,
+			}),
+		)
 		.mutation(async ({ ctx, input }) => {
-			const { userId, itemId, slug, variant } = input;
+			const { userId, item } = input;
+			const { itemId, slug, variant } = item;
 
 			await ctx.db.cartItem.upsert({
 				where: {
