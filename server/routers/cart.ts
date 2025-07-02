@@ -29,6 +29,12 @@ export const cartRouter = createTRPCRouter({
 				where: {
 					userId: input.userId,
 				},
+				select: {
+					itemId: true,
+					slug: true,
+					quantity: true,
+					variant: true,
+				},
 			});
 		}),
 
