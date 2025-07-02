@@ -375,6 +375,46 @@ export type FEATURED_PRODUCTS_QUERYResult = Array<{
   };
   featured: boolean | null;
 }>;
+// Variable: PRODUCTS_BY_SLUGS_QUERY
+// Query: *[_type == "product" && slug.current in $slugs] {  _id,  name,  slug,  description,  images,  price,  variants}
+export type PRODUCTS_BY_SLUGS_QUERYResult = Array<{
+  _id: string;
+  name: string;
+  slug: Slug;
+  description: string | null;
+  images: Array<{
+    asset?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+    };
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt: string;
+    _type: "image";
+    _key: string;
+  }> | null;
+  price: number;
+  variants: Array<{
+    name?: string;
+    price?: number;
+    image?: {
+      asset?: {
+        _ref: string;
+        _type: "reference";
+        _weak?: boolean;
+        [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+      };
+      media?: unknown;
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      _type: "image";
+    };
+    _key: string;
+  }> | null;
+}>;
 
 // Query TypeMap
 import "@sanity/client";
@@ -383,5 +423,6 @@ declare module "@/sanity/lib/client" {
     "*[_type == \"product\"] | order(_createdAt desc) {\n  _id,\n  name,\n  slug,\n  description,\n  images,\n  price,\n  category->{\n    _id,\n    name,\n    slug\n  },\n  featured,\n  weight,\n  dimensions\n}": PRODUCTS_QUERYResult;
     "*[_type == \"product\" && slug.current == $slug][0] {\n  _id,\n  name,\n  slug,\n  description,\n  detailedDescription,\n  images,\n  price,\n  category->{\n    _id,\n    name,\n    slug\n  },\n  specifications,\n  variants,\n  featured,\n  weight,\n  dimensions\n}": PRODUCT_BY_SLUG_QUERYResult;
     "*[_type == \"product\" && featured == true] | order(_createdAt desc) {\n  _id,\n  name,\n  slug,\n  description,\n  images,\n  price,\n  category->{\n    _id,\n    name,\n    slug\n  },\n  featured\n}": FEATURED_PRODUCTS_QUERYResult;
+    "*[_type == \"product\" && slug.current in $slugs] {\n  _id,\n  name,\n  slug,\n  description,\n  images,\n  price,\n  variants\n}": PRODUCTS_BY_SLUGS_QUERYResult;
   }
 }
