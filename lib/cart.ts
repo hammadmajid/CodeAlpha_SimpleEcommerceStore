@@ -9,7 +9,7 @@ export const itemSchema = z.object({
 
 export const cartSchema = z.object({
 	userId: z.string(),
-	iems: z.array(itemSchema),
+	items: z.array(itemSchema),
 });
 
 export type Item = z.infer<typeof itemSchema>;
