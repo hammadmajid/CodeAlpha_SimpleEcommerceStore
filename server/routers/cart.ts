@@ -12,7 +12,13 @@ export const cartRouter = createTRPCRouter({
 				},
 			});
 
-			return cart.length;
+			// Sum the quantity property of each cart item
+			const totalCount = cart.reduce(
+				(sum, item) => sum + (item.quantity ?? 0),
+				0,
+			);
+
+			return totalCount;
 		}),
 
 	getAll: publicProcedure
