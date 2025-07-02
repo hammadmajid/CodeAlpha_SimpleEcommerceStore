@@ -3,8 +3,8 @@ import { z } from "zod";
 export const itemSchema = z.object({
 	itemId: z.string(),
 	slug: z.string(),
-	variant: z.string().optional(),
-	quantity: z.number().optional(),
+	variant: z.string().optional().nullable(),
+	quantity: z.number().optional().nullable(),
 });
 
 export const cartSchema = z.object({

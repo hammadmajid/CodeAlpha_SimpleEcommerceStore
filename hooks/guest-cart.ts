@@ -40,7 +40,7 @@ export function useGuestCart() {
 		});
 	}, []);
 
-	const removeItem = useCallback((itemId: string, variant?: string) => {
+	const removeItem = useCallback((itemId: string, variant?: string | null) => {
 		setCart((prev) =>
 			prev.filter(
 				(i) =>

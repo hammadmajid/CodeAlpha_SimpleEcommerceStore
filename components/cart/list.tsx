@@ -24,7 +24,7 @@ interface CartListProps {
 export default function CartList({ products, cart }: CartListProps) {
 	const { addItem, removeItem } = useCart();
 
-	const handleIncrement = (itemId: string, variant?: string) => {
+	const handleIncrement = (itemId: string, variant?: string | null) => {
 		const item = cart.find(
 			(i) => i.itemId === itemId && (variant ?? null) === (i.variant ?? null),
 		);
@@ -33,7 +33,7 @@ export default function CartList({ products, cart }: CartListProps) {
 		}
 	};
 
-	const handleDecrement = (itemId: string, variant?: string) => {
+	const handleDecrement = (itemId: string, variant?: string | null) => {
 		const item = cart.find(
 			(i) => i.itemId === itemId && (variant ?? null) === (i.variant ?? null),
 		);
@@ -44,7 +44,7 @@ export default function CartList({ products, cart }: CartListProps) {
 		}
 	};
 
-	const handleRemove = (itemId: string, variant?: string) => {
+	const handleRemove = (itemId: string, variant?: string | null) => {
 		removeItem(itemId, variant);
 	};
 
