@@ -11,3 +11,15 @@ datasource db {
   url       = env("DATABASE_URL")
   directUrl = env("DIRECT_URL")
 }
+
+model CartItem {
+  userId String @map("user_id")
+  itemId String @map("item_id")
+  slug   String
+
+  quantity Int     @default(1)
+  variant  String?
+
+  @@id([userId, itemId])
+  @@map("cart_items")
+}
