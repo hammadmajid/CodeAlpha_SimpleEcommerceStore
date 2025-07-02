@@ -1,6 +1,7 @@
 import { z } from "zod";
 
 import { createTRPCRouter, publicProcedure } from "@/server/trpc";
+import { cartSchema } from "@/lib/cart";
 
 export const cartRouter = createTRPCRouter({
 	getItemsCount: publicProcedure
@@ -32,14 +33,7 @@ export const cartRouter = createTRPCRouter({
 		}),
 
 	insertItem: publicProcedure
-		.input(
-			z.object({
-				userId: z.string(),
-				itemId: z.string(),
-				slug: z.string(),
-				variant: z.string().optional(),
-			}),
-		)
+		.input(cartSchema)
 		.mutation(async ({ ctx, input }) => {
 			const { userId, itemId, slug, variant } = input;
 
