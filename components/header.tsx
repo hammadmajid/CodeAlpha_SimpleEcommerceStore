@@ -5,7 +5,6 @@ import {
 	SignedIn,
 	SignedOut,
 	UserButton,
-	useUser,
 } from "@clerk/nextjs";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
@@ -13,26 +12,15 @@ import Button from "@mui/material/Button";
 import InputBase from "@mui/material/InputBase";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
-import { MagnifyingGlassIcon } from "@phosphor-icons/react/dist/ssr/MagnifyingGlass";
-import { ShoppingCartSimpleIcon } from "@phosphor-icons/react/dist/ssr/ShoppingCartSimple";
-import { SignInIcon } from "@phosphor-icons/react/dist/ssr/SignIn";
+import { MagnifyingGlassIcon } from "@phosphor-icons/react/dist/csr/MagnifyingGlass";
+import { ShoppingCartSimpleIcon } from "@phosphor-icons/react/dist/csr/ShoppingCartSimple";
+import { SignInIcon } from "@phosphor-icons/react/dist/csr/SignIn";
 import Link from "next/link";
 import { NextLinkComposed } from "./link";
-import { api } from "@/trpc/react";
 import { useCart } from "@/hooks/cart-context";
 
 export default function Header() {
-	const { isSignedIn, user } = useUser();
 	const { itemCount } = useCart();
-
-	const [apiCount] = api.cart.getItemsCount.useSuspenseQuery(
-		isSignedIn && user?.id
-			? { userId: user.id }
-			: // If not signed in, skip query
-				{ userId: "undefined" },
-	);
-
-	const cartCount = isSignedIn && apiCount !== undefined ? apiCount : itemCount;
 
 	return (
 		<AppBar position="static">
@@ -102,7 +90,7 @@ export default function Header() {
 								pathname: "/cart",
 							}}
 						>
-							{cartCount}
+							{itemCount}
 						</Button>
 					</Box>
 					<SignedOut>

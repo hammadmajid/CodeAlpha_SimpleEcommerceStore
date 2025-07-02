@@ -1,23 +1,17 @@
 "use client";
 
 import type { RouterInputs } from "@/trpc/react";
-import { api } from "@/trpc/react";
 import Button from "@mui/material/Button";
-import { ShoppingCartSimpleIcon } from "@phosphor-icons/react/dist/ssr/ShoppingCartSimple";
-import { useUser } from "@clerk/nextjs";
+import { ShoppingCartSimpleIcon } from "@phosphor-icons/react/dist/csr/ShoppingCartSimple";
 import { useCart } from "@/hooks/cart-context";
 
-type AddToCartProps = RouterInputs["cart"]["insertItem"]["item"];
+export default function AddToCart({ itemId, slug, variant }: RouterInputs["cart"]["insertItem"]["item"]) {
+	const { addItem, loading } = useCart();
 
-function AddToCartButton({
-	onClick,
-	disabled,
-	children,
-}: {
-	onClick: () => void;
-	disabled?: boolean;
-	children: React.ReactNode;
-}) {
+	const handleClick = () => {
+		addItem({ itemId, slug, variant, quantity: null });
+	};
+
 	return (
 		<Button
 			size="small"
@@ -26,49 +20,10 @@ function AddToCartButton({
 			fullWidth
 			sx={{ textTransform: "none", fontWeight: 500, py: 1.5, px: 4 }}
 			startIcon={<ShoppingCartSimpleIcon weight="bold" />}
-			onClick={onClick}
-			disabled={disabled}
-		>
-			{children}
-		</Button>
-	);
-}
-
-export default function AddToCart({ itemId, slug, variant }: AddToCartProps) {
-	const { isLoaded, isSignedIn, user } = useUser();
-	const mutation = api.cart.insertItem.useMutation();
-	const { addItem } = useCart();
-
-	if (!isSignedIn) {
-		const handleGuestAdd = () => {
-			addItem({ itemId, slug, variant });
-		};
-		return (
-			<AddToCartButton onClick={handleGuestAdd}>Add to Cart</AddToCartButton>
-		);
-	}
-
-	const handleClick = () => {
-		mutation.mutate({
-			userId: user.id,
-			item: {
-				itemId,
-				slug,
-				variant,
-			},
-		});
-	};
-
-	return (
-		<AddToCartButton
 			onClick={handleClick}
-			disabled={mutation.isPending || !isLoaded}
+			disabled={loading}
 		>
-			{mutation.isPending
-				? "Adding..."
-				: mutation.error
-					? mutation.error.message
-					: "Add to Cart"}
-		</AddToCartButton>
+			{loading ? "Adding..." : "Add to Cart"}
+		</Button>
 	);
 }

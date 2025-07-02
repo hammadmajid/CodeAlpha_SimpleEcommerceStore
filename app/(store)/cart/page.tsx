@@ -2,41 +2,16 @@
 
 import { api } from "@/trpc/react";
 import { useCart } from "@/hooks/cart-context";
-import { useAuth } from "@clerk/nextjs";
-import type { PRODUCT_BY_SLUG_QUERYResult } from "@/sanity/types";
 import CartList from "@/components/cart/list";
 import { Box, Button, Typography, Divider } from "@mui/material";
 
 export default function CartPage() {
 	const { cart } = useCart();
-	const { userId, isSignedIn } = useAuth();
 
-	let products: PRODUCT_BY_SLUG_QUERYResult[] = [];
-	let cartItems = cart;
+	const slugs = cart.map((cartItem) => cartItem.slug);
+	const [products] = api.inventory.getProductsBySlugs.useSuspenseQuery({ slugs });
 
-	if (isSignedIn) {
-		const [items] = api.cart.getAll.useSuspenseQuery({ userId });
-		cartItems = items.map(({ variant, ...rest }) => ({
-			...rest,
-			variant: variant === null ? undefined : variant,
-		}));
-		products = items.map((item) => {
-			const [product] = api.inventory.getBySlug.useSuspenseQuery({
-				slug: item.slug,
-			});
-			return product;
-		});
-	} else {
-		products = cart.map((cartItem) => {
-			const [product] = api.inventory.getBySlug.useSuspenseQuery({
-				slug: cartItem.slug,
-			});
-			return product;
-		});
-	}
-
-	// Calculate total
-	const total = cartItems.reduce((sum, item) => {
+	const total = cart.reduce((sum, item) => {
 		const product = products.find((p) => p?._id === item.itemId);
 		if (!product) return sum;
 		return sum + product.price * (item.quantity ?? 1);
@@ -62,8 +37,8 @@ export default function CartPage() {
 				>
 					Review your selected items and proceed to checkout
 				</Typography>
-				<CartList products={products} cart={cartItems} />
-				{cartItems.length > 0 && (
+				<CartList products={products} cart={cart} />
+				{cart.length > 0 && (
 					<Box
 						sx={{
 							mt: 4,
@@ -79,7 +54,7 @@ export default function CartPage() {
 							variant="contained"
 							color="primary"
 							size="large"
-							disabled={cartItems.length === 0}
+							disabled={cart.length === 0}
 							onClick={() => {
 								/* Checkout action placeholder */
 							}}

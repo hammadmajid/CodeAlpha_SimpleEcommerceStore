@@ -17,7 +17,7 @@ import type { Item } from "@/lib/cart";
 import { useCart } from "@/hooks/cart-context";
 
 interface CartListProps {
-	products: RouterOutputs["inventory"]["getBySlug"][];
+	products: RouterOutputs["inventory"]["getProductsBySlugs"];
 	cart: Item[];
 }
 
