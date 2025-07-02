@@ -1,5 +1,12 @@
-import { api } from "@/trpc/server";
-import { SignInButton, SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
+"use client";
+
+import {
+	SignInButton,
+	SignedIn,
+	SignedOut,
+	UserButton,
+	useUser,
+} from "@clerk/nextjs";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
@@ -10,11 +17,22 @@ import { MagnifyingGlassIcon } from "@phosphor-icons/react/dist/ssr/MagnifyingGl
 import { ShoppingCartSimpleIcon } from "@phosphor-icons/react/dist/ssr/ShoppingCartSimple";
 import { SignInIcon } from "@phosphor-icons/react/dist/ssr/SignIn";
 import Link from "next/link";
-import type React from "react";
 import { NextLinkComposed } from "./link";
+import { api } from "@/trpc/react";
+import { useCart } from "@/hooks/cart-context";
 
-const Header: React.FC = () => {
-	const itemCount = api.cart.getItemsCount({ userId: "foo" });
+export default function Header() {
+	const { isSignedIn, user } = useUser();
+	const { itemCount } = useCart();
+
+	const [apiCount] = api.cart.getItemsCount.useSuspenseQuery(
+		isSignedIn && user?.id
+			? { userId: user.id }
+			: // If not signed in, skip query
+				{ userId: "undefined" },
+	);
+
+	const cartCount = isSignedIn && apiCount !== undefined ? apiCount : itemCount;
 
 	return (
 		<AppBar position="static">
@@ -84,7 +102,7 @@ const Header: React.FC = () => {
 								pathname: "/cart",
 							}}
 						>
-							{itemCount}
+							{cartCount}
 						</Button>
 					</Box>
 					<SignedOut>
@@ -120,6 +138,4 @@ const Header: React.FC = () => {
 			</Toolbar>
 		</AppBar>
 	);
-};
-
-export default Header;
+}
