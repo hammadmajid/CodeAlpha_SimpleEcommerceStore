@@ -57,4 +57,31 @@ export const cartRouter = createTRPCRouter({
 				create: { userId, itemId, slug, quantity: 1, variant },
 			});
 		}),
+
+	removeItem: publicProcedure
+		.input(
+			z.object({
+				userId: z.string(),
+				itemId: z.string(),
+				variant: z.string().optional(),
+			}),
+		)
+		.mutation(async ({ ctx, input }) => {
+			const { userId, itemId, variant } = input;
+			await ctx.db.cartItem.deleteMany({
+				where: {
+					userId,
+					itemId,
+					variant: variant ?? null,
+				},
+			});
+		}),
+
+	clearCart: publicProcedure
+		.input(z.object({ userId: z.string() }))
+		.mutation(async ({ ctx, input }) => {
+			await ctx.db.cartItem.deleteMany({
+				where: { userId: input.userId },
+			});
+		}),
 });
