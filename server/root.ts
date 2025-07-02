@@ -1,5 +1,6 @@
 import { inventoryRouter } from "@/server/routers/inventory";
 import { createCallerFactory, createTRPCRouter } from "@/server/trpc";
+import { cartRouter } from "./routers/cart";
 
 /**
  * This is the primary router for your server.
@@ -8,6 +9,7 @@ import { createCallerFactory, createTRPCRouter } from "@/server/trpc";
  */
 export const appRouter = createTRPCRouter({
 	inventory: inventoryRouter,
+	cart: cartRouter,
 });
 
 // export type definition of API
