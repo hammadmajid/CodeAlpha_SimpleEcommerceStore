@@ -5,14 +5,13 @@ import {
 	CardMedia,
 	CardContent,
 	CardActions,
-	Button,
 	Chip,
 	Box,
 } from "@mui/material";
-import { ShoppingCartSimpleIcon } from "@phosphor-icons/react/dist/ssr/ShoppingCartSimple";
 import Link from "next/link";
 import { urlFor } from "@/sanity/lib/image";
 import type { RouterOutputs } from "@/trpc/react";
+import AddToCart from "../cart/add";
 
 interface ProdutctListProps {
 	products: RouterOutputs["inventory"]["getAll"];
@@ -123,16 +122,11 @@ export default function ProdutctList({ products }: ProdutctListProps) {
 						</Link>
 
 						<CardActions sx={{ p: 2, pt: 0, gap: 1 }}>
-							<Button
-								size="small"
-								variant="contained"
-								color="primary"
-								fullWidth
-								sx={{ textTransform: "none", fontWeight: 500 }}
-								startIcon={<ShoppingCartSimpleIcon weight="bold" />}
-							>
-								Add to Cart
-							</Button>
+							<AddToCart
+								userId="foo"
+								itemId={product._id}
+								slug={product.slug.current}
+							/>
 						</CardActions>
 					</Card>
 				</Grid>

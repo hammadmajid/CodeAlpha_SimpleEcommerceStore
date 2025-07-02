@@ -21,8 +21,8 @@ import { urlFor } from "@/sanity/lib/image";
 import { PortableText } from "@portabletext/react";
 import { notFound } from "next/navigation";
 import type { RouterOutputs } from "@/trpc/react";
-import { ShoppingCartSimpleIcon } from "@phosphor-icons/react/dist/ssr/ShoppingCartSimple";
 import { ArrowLeftIcon } from "@phosphor-icons/react/dist/ssr/ArrowLeft";
+import AddToCart from "@/components/cart/add";
 
 interface SingleProductProps {
 	product: RouterOutputs["inventory"]["getBySlug"];
@@ -132,24 +132,15 @@ export default function SingleProduct({ product }: SingleProductProps) {
 						)}
 
 						{/* Add to Cart Button */}
-						<Button
-							variant="contained"
-							size="large"
-							startIcon={<ShoppingCartSimpleIcon weight="bold" />}
-							sx={{
-								mb: 4,
-								py: 1.5,
-								px: 4,
-								textTransform: "none",
-								fontWeight: 600,
-							}}
-						>
-							Add to Cart
-						</Button>
+						<AddToCart
+							userId="foo"
+							itemId={product._id}
+							slug={product.slug.current}
+						/>
 
 						{/* Product Specifications */}
 						{product.specifications && product.specifications.length > 0 && (
-							<Box sx={{ mb: 3 }}>
+							<Box sx={{ mb: 3, my: 4 }}>
 								<Typography variant="h6" sx={{ mb: 2, fontWeight: 600 }}>
 									Specifications
 								</Typography>
