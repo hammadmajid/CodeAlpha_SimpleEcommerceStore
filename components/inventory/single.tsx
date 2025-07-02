@@ -132,11 +132,7 @@ export default function SingleProduct({ product }: SingleProductProps) {
 						)}
 
 						{/* Add to Cart Button */}
-						<AddToCart
-							userId="foo"
-							itemId={product._id}
-							slug={product.slug.current}
-						/>
+						<AddToCart itemId={product._id} slug={product.slug.current} />
 
 						{/* Product Specifications */}
 						{product.specifications && product.specifications.length > 0 && (

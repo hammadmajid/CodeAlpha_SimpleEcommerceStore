@@ -123,7 +123,6 @@ export default function ProdutctList({ products }: ProdutctListProps) {
 
 						<CardActions sx={{ p: 2, pt: 0, gap: 1 }}>
 							<AddToCart
-								userId="foo"
 								itemId={product._id}
 								slug={product.slug.current}
 							/>
