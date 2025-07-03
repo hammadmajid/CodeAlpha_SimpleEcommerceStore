@@ -11,12 +11,12 @@ import {
 import { MinusIcon } from "@phosphor-icons/react/dist/csr/Minus";
 import { PlusIcon } from "@phosphor-icons/react/dist/csr/Plus";
 import { TrashIcon } from "@phosphor-icons/react/dist/csr/Trash";
-import { SpinnerGap } from "@phosphor-icons/react/dist/csr/SpinnerGap";
+import { SpinnerGapIcon } from "@phosphor-icons/react/dist/csr/SpinnerGap";
 import type { RouterOutputs } from "@/trpc/react";
 import { urlFor } from "@/sanity/lib/image";
 import type { Item } from "@/lib/cart";
 import { useCart } from "@/hooks/cart-context";
-import "./list.css"; // (create this file if it doesn't exist)
+import "./list.css";
 
 interface CartListProps {
 	products: RouterOutputs["inventory"]["getProductsBySlugs"];
@@ -152,7 +152,7 @@ export default function CartList({ products, cart }: CartListProps) {
 										aria-label="decrement"
 									>
 										{isPending && pendingAction === "decrement" ? (
-											<SpinnerGap className="spin" size={16} />
+											<SpinnerGapIcon className="spin" size={16} />
 										) : (
 											<MinusIcon />
 										)}
@@ -170,7 +170,7 @@ export default function CartList({ products, cart }: CartListProps) {
 										aria-label="increment"
 									>
 										{isPending && pendingAction === "increment" ? (
-											<SpinnerGap className="spin" size={16} />
+											<SpinnerGapIcon className="spin" size={16} />
 										) : (
 											<PlusIcon />
 										)}
@@ -185,7 +185,7 @@ export default function CartList({ products, cart }: CartListProps) {
 										aria-label="remove"
 									>
 										{isPending && pendingAction === "remove" ? (
-											<SpinnerGap className="spin" size={16} />
+											<SpinnerGapIcon className="spin" size={16} />
 										) : (
 											<TrashIcon />
 										)}
