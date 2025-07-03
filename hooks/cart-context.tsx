@@ -1,11 +1,11 @@
 "use client";
 
-import type React from "react";
+import React from "react";
+import type { Item } from "@/lib/cart";
+import { api } from "@/trpc/react";
+import { useUser } from "@clerk/nextjs";
 import { createContext, useContext } from "react";
 import { useGuestCart } from "./guest-cart";
-import { useUser } from "@clerk/nextjs";
-import { api } from "@/trpc/react";
-import type { Item } from "@/lib/cart";
 
 // Unified cart API type
 interface UnifiedCart {
@@ -16,6 +16,8 @@ interface UnifiedCart {
 	clearCart: () => void;
 	decrementItem: (itemId: string, variant?: string | null) => void;
 	loading: boolean;
+	pendingAction?: "increment" | "decrement" | "remove" | null;
+	pendingItem?: { itemId: string; variant?: string | null } | null;
 }
 
 const CartContext = createContext<UnifiedCart | undefined>(undefined);
@@ -40,7 +42,20 @@ function useUnifiedCart(): UnifiedCart {
 		{ enabled },
 	);
 	const utils = api.useUtils();
+
+	// Track pending action and item
+	const [pendingAction, setPendingAction] = React.useState<"increment" | "decrement" | "remove" | null>(null);
+	const [pendingItem, setPendingItem] = React.useState<{ itemId: string; variant?: string | null } | null>(null);
+
 	const insertMutation = api.cart.insertItem.useMutation({
+		onMutate: async (vars) => {
+			setPendingAction("increment");
+			setPendingItem({ itemId: vars.item.itemId, variant: vars.item.variant });
+		},
+		onSettled: () => {
+			setPendingAction(null);
+			setPendingItem(null);
+		},
 		onSuccess: async () => {
 			if (userId) {
 				await utils.cart.getAll.invalidate({ userId });
@@ -49,6 +64,14 @@ function useUnifiedCart(): UnifiedCart {
 		},
 	});
 	const removeMutation = api.cart.removeItem.useMutation({
+		onMutate: async (vars) => {
+			setPendingAction("remove");
+			setPendingItem({ itemId: vars.itemId, variant: vars.variant });
+		},
+		onSettled: () => {
+			setPendingAction(null);
+			setPendingItem(null);
+		},
 		onSuccess: async () => {
 			if (userId) {
 				await utils.cart.getAll.invalidate({ userId });
@@ -65,6 +88,14 @@ function useUnifiedCart(): UnifiedCart {
 		},
 	});
 	const decrementMutation = api.cart.decrementItem.useMutation({
+		onMutate: async (vars) => {
+			setPendingAction("decrement");
+			setPendingItem({ itemId: vars.itemId, variant: vars.variant });
+		},
+		onSettled: () => {
+			setPendingAction(null);
+			setPendingItem(null);
+		},
 		onSuccess: async () => {
 			if (userId) {
 				await utils.cart.getAll.invalidate({ userId });
@@ -107,11 +138,13 @@ function useUnifiedCart(): UnifiedCart {
 				removeMutation.isPending ||
 				clearMutation.isPending ||
 				decrementMutation.isPending,
+			pendingAction,
+			pendingItem,
 		};
 	}
 
 	// Fallback to guest cart
-	return { ...guest, loading: false };
+	return { ...guest, loading: false, pendingAction: null, pendingItem: null };
 }
 
 export function CartProvider({ children }: { children: React.ReactNode }) {

@@ -22,7 +22,7 @@ interface CartListProps {
 }
 
 export default function CartList({ products, cart }: CartListProps) {
-	const { addItem, removeItem, decrementItem } = useCart();
+	const { addItem, removeItem, decrementItem, pendingAction, pendingItem } = useCart();
 
 	const handleIncrement = (itemId: string, variant?: string | null) => {
 		const item = cart.find(
@@ -64,6 +64,11 @@ export default function CartList({ products, cart }: CartListProps) {
 				const image =
 					product.images?.[0] ||
 					"https://via.placeholder.com/150?text=No+Image";
+
+				const isPending =
+					pendingItem &&
+					pendingItem.itemId === cartItem.itemId &&
+					(pendingItem.variant ?? null) === (cartItem.variant ?? null);
 
 				return (
 					<Grid
@@ -128,26 +133,46 @@ export default function CartList({ products, cart }: CartListProps) {
 									onClick={() =>
 										handleDecrement(cartItem.itemId, cartItem.variant)
 									}
-									disabled={(cartItem.quantity ?? 1) <= 1}
+									disabled={
+										!!((cartItem.quantity ?? 1) <= 1 ||
+										(isPending && pendingAction === "decrement"))
+									}
 									aria-label="decrement"
 								>
-									<MinusIcon />
+									{isPending && pendingAction === "decrement" ? (
+										<span className="loader" style={{ width: 16, height: 16 }} />
+									) : (
+										<MinusIcon />
+									)}
 								</IconButton>
 								<Typography>{cartItem.quantity}</Typography>
 								<IconButton
 									onClick={() =>
 										handleIncrement(cartItem.itemId, cartItem.variant)
 									}
-									disabled={(cartItem.quantity ?? 1) >= 10}
+									disabled={
+										!!((cartItem.quantity ?? 1) >= 10 ||
+										(isPending && pendingAction === "increment"))
+									}
 									aria-label="increment"
 								>
-									<PlusIcon />
+									{isPending && pendingAction === "increment" ? (
+										<span className="loader" style={{ width: 16, height: 16 }} />
+									) : (
+										<PlusIcon />
+									)}
 								</IconButton>
 							</Box>
 							<IconButton
-								onClick={() => handleRemove(cartItem.itemId, cartItem.variant)}
+									onClick={() => handleRemove(cartItem.itemId, cartItem.variant)}
+									disabled={!!(isPending && pendingAction === "remove")}
+								aria-label="remove"
 							>
-								<TrashIcon />
+								{isPending && pendingAction === "remove" ? (
+									<span className="loader" style={{ width: 16, height: 16 }} />
+								) : (
+									<TrashIcon />
+								)}
 							</IconButton>
 						</Card>
 					</Grid>
