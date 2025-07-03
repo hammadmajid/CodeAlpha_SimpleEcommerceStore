@@ -19,7 +19,7 @@ export default function CartPage() {
 
 	return (
 		<main>
-			<Box sx={{ py: 4, maxWidth: 768, mx: "auto" }}>
+			<Box sx={{ px: 4, py: 4, maxWidth: 768, mx: "auto" }}>
 				<Typography
 					variant="h3"
 					component="h1"
