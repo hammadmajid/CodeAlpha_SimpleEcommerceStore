@@ -43,16 +43,6 @@ export default function CartList({ products, cart }: CartListProps) {
 		removeItem(itemId, variant);
 	};
 
-	if (!cart.length) {
-		return (
-			<Box textAlign="center" py={8}>
-				<Typography variant="h6" color="text.secondary">
-					Your cart is empty.
-				</Typography>
-			</Box>
-		);
-	}
-
 	return (
 		<Grid container spacing={3}>
 			{cart.map((cartItem) => {
