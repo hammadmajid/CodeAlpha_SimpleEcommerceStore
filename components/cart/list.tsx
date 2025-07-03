@@ -11,10 +11,12 @@ import {
 import { MinusIcon } from "@phosphor-icons/react/dist/csr/Minus";
 import { PlusIcon } from "@phosphor-icons/react/dist/csr/Plus";
 import { TrashIcon } from "@phosphor-icons/react/dist/csr/Trash";
+import { SpinnerGap } from "@phosphor-icons/react/dist/csr/SpinnerGap";
 import type { RouterOutputs } from "@/trpc/react";
 import { urlFor } from "@/sanity/lib/image";
 import type { Item } from "@/lib/cart";
 import { useCart } from "@/hooks/cart-context";
+import "./list.css"; // (create this file if it doesn't exist)
 
 interface CartListProps {
 	products: RouterOutputs["inventory"]["getProductsBySlugs"];
@@ -72,12 +74,10 @@ export default function CartList({ products, cart }: CartListProps) {
 
 				return (
 					<Grid
-						size={{
-							xs: 12,
-						}}
+						size={{ xs: 12 }}
 						key={cartItem.itemId + (cartItem.variant || "")}
 					>
-						<Card sx={{ display: "flex", alignItems: "center", p: 2 }}>
+						<Card sx={{ display: "flex", alignItems: { xs: "flex-start", sm: "center" }, p: 2, flexDirection: { xs: "column", sm: "row" } }}>
 							<CardMedia
 								component="img"
 								image={
@@ -91,10 +91,11 @@ export default function CartList({ products, cart }: CartListProps) {
 									height: 120,
 									objectFit: "cover",
 									borderRadius: 2,
-									mr: 2,
+									mr: { xs: 0, sm: 2 },
+									mb: { xs: 2, sm: 0 },
 								}}
 							/>
-							<CardContent sx={{ flex: 1 }}>
+							<CardContent sx={{ flex: 1, width: "100%" }}>
 								<Typography variant="h6" sx={{ fontWeight: 600 }}>
 									{product.name}
 								</Typography>
@@ -128,52 +129,69 @@ export default function CartList({ products, cart }: CartListProps) {
 									${product.price.toFixed(2)}
 								</Typography>
 							</CardContent>
-							<Box display="flex" alignItems="center" gap={1}>
-								<IconButton
-									onClick={() =>
-										handleDecrement(cartItem.itemId, cartItem.variant)
-									}
-									disabled={
-										!!((cartItem.quantity ?? 1) <= 1 ||
-										(isPending && pendingAction === "decrement"))
-									}
-									aria-label="decrement"
-								>
-									{isPending && pendingAction === "decrement" ? (
-										<span className="loader" style={{ width: 16, height: 16 }} />
-									) : (
-										<MinusIcon />
-									)}
-								</IconButton>
-								<Typography>{cartItem.quantity}</Typography>
-								<IconButton
-									onClick={() =>
-										handleIncrement(cartItem.itemId, cartItem.variant)
-									}
-									disabled={
-										!!((cartItem.quantity ?? 1) >= 10 ||
-										(isPending && pendingAction === "increment"))
-									}
-									aria-label="increment"
-								>
-									{isPending && pendingAction === "increment" ? (
-										<span className="loader" style={{ width: 16, height: 16 }} />
-									) : (
-										<PlusIcon />
-									)}
-								</IconButton>
-							</Box>
-							<IconButton
-									onClick={() => handleRemove(cartItem.itemId, cartItem.variant)}
-									disabled={!!(isPending && pendingAction === "remove")}
-								aria-label="remove"
+							{/* Responsive action buttons */}
+							<Box
+								display="flex"
+								flexDirection={{ xs: "row", sm: "row" }}
+								alignItems={{ xs: "center", sm: "center" }}
+								justifyContent={{ xs: "space-between", sm: "flex-end" }}
+								width={{ xs: "100%", sm: "auto" }}
+								sx={{ mt: { xs: 2, sm: 0 }, gap: { xs: 2, sm: 0 } }}
 							>
-								{isPending && pendingAction === "remove" ? (
-									<span className="loader" style={{ width: 16, height: 16 }} />
-								) : (
-									<TrashIcon />
-								)}
-							</IconButton>
+								{/* Group inc/dec */}
+								<Box display="flex" alignItems="center" gap={1}>
+									<IconButton
+										size="small"
+										onClick={() =>
+											handleDecrement(cartItem.itemId, cartItem.variant)
+										}
+										disabled={
+											!!((cartItem.quantity ?? 1) <= 1 ||
+											(isPending && pendingAction === "decrement"))
+										}
+										aria-label="decrement"
+									>
+										{isPending && pendingAction === "decrement" ? (
+											<SpinnerGap className="spin" size={16} />
+										) : (
+											<MinusIcon />
+										)}
+									</IconButton>
+									<Typography>{cartItem.quantity}</Typography>
+									<IconButton
+										size="small"
+										onClick={() =>
+											handleIncrement(cartItem.itemId, cartItem.variant)
+										}
+										disabled={
+											!!((cartItem.quantity ?? 1) >= 10 ||
+											(isPending && pendingAction === "increment"))
+										}
+										aria-label="increment"
+									>
+										{isPending && pendingAction === "increment" ? (
+											<SpinnerGap className="spin" size={16} />
+										) : (
+											<PlusIcon />
+										)}
+									</IconButton>
+								</Box>
+								{/* Remove button with spacing */}
+								<Box ml={{ xs: 0, sm: 2 }} mt={{ xs: 0, sm: 0 }}>
+									<IconButton
+										size="small"
+										onClick={() => handleRemove(cartItem.itemId, cartItem.variant)}
+										disabled={!!(isPending && pendingAction === "remove")}
+										aria-label="remove"
+									>
+										{isPending && pendingAction === "remove" ? (
+											<SpinnerGap className="spin" size={16} />
+										) : (
+											<TrashIcon />
+										)}
+									</IconButton>
+								</Box>
+							</Box>
 						</Card>
 					</Grid>
 				);
