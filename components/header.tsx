@@ -1,27 +1,16 @@
-"use client";
-
-import {
-	SignInButton,
-	SignedIn,
-	SignedOut,
-	UserButton,
-} from "@clerk/nextjs";
+import { SignInButton, SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import InputBase from "@mui/material/InputBase";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
-import { MagnifyingGlassIcon } from "@phosphor-icons/react/dist/csr/MagnifyingGlass";
-import { ShoppingCartSimpleIcon } from "@phosphor-icons/react/dist/csr/ShoppingCartSimple";
-import { SignInIcon } from "@phosphor-icons/react/dist/csr/SignIn";
+import { MagnifyingGlassIcon } from "@phosphor-icons/react/dist/ssr/MagnifyingGlass";
+import { SignInIcon } from "@phosphor-icons/react/dist/ssr/SignIn";
 import Link from "next/link";
-import { NextLinkComposed } from "./link";
-import { useCart } from "@/hooks/cart-context";
+import CartHeaderButton from "@/components/cart/cart-header-button";
 
 export default function Header() {
-	const { itemCount } = useCart();
-
 	return (
 		<AppBar position="static">
 			<Toolbar sx={{ padding: "16px 24px", minHeight: "80px" }}>
@@ -32,10 +21,7 @@ export default function Header() {
 				>
 					<Link
 						href="/"
-						style={{
-							textDecoration: "none",
-							color: "inherit",
-						}}
+						style={{ textDecoration: "none", color: "inherit" }}
 					>
 						PREPEN
 					</Link>
@@ -53,11 +39,7 @@ export default function Header() {
 							size={24}
 							weight="bold"
 							color="#000"
-							style={{
-								position: "absolute",
-								left: "12px",
-								zIndex: 1,
-							}}
+							style={{ position: "absolute", left: "12px", zIndex: 1 }}
 						/>
 						<InputBase
 							placeholder="SEARCH PRODUCTS..."
@@ -78,21 +60,7 @@ export default function Header() {
 							}}
 						/>
 					</Box>
-					<Box sx={{ display: "flex", alignItems: "center" }}>
-						<Button
-							variant="text"
-							color="inherit"
-							sx={{ minWidth: 0, padding: 1 }}
-							aria-label="Cart"
-							startIcon={<ShoppingCartSimpleIcon weight="bold" />}
-							component={NextLinkComposed}
-							to={{
-								pathname: "/cart",
-							}}
-						>
-							{itemCount}
-						</Button>
-					</Box>
+					<CartHeaderButton />
 					<SignedOut>
 						<SignInButton>
 							<Button
