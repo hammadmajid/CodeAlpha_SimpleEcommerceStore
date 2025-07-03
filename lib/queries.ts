@@ -55,4 +55,15 @@ const FEATURED_PRODUCTS_QUERY =
   featured
 }`);
 
-export { PRODUCTS_QUERY, PRODUCT_BY_SLUG_QUERY, FEATURED_PRODUCTS_QUERY };
+const PRODUCTS_BY_SLUGS_QUERY =
+    defineQuery(`*[_type == "product" && slug.current in $slugs] {
+  _id,
+  name,
+  slug,
+  description,
+  images,
+  price,
+  variants
+}`);
+
+export { PRODUCTS_QUERY, PRODUCT_BY_SLUG_QUERY, FEATURED_PRODUCTS_QUERY, PRODUCTS_BY_SLUGS_QUERY };
