@@ -9,13 +9,23 @@ export default function CartPage() {
 	const { cart } = useCart();
 
 	const slugs = cart.map((cartItem) => cartItem.slug);
-	const [products] = api.inventory.getProductsBySlugs.useSuspenseQuery({ slugs });
+	const { data: products } = api.inventory.getProductsBySlugs.useQuery(
+		{
+			slugs,
+		},
+		{
+			enabled: cart.length > 0, // prevents SSR error during build
+		},
+	);
 
-	const total = cart.reduce((sum, item) => {
-		const product = products.find((p) => p?._id === item.itemId);
-		if (!product) return sum;
-		return sum + product.price * (item.quantity ?? 1);
-	}, 0);
+	let total = 0;
+	if (products) {
+		total = cart.reduce((sum, item) => {
+			const product = products.find((p) => p?._id === item.itemId);
+			if (!product) return sum;
+			return sum + product.price * (item.quantity ?? 1);
+		}, 0);
+	}
 
 	return (
 		<main>
@@ -37,7 +47,16 @@ export default function CartPage() {
 				>
 					Review your selected items and proceed to checkout
 				</Typography>
-				<CartList products={products} cart={cart} />
+
+				{products && products.length > 0 ? (
+					<CartList products={products} cart={cart} />
+				) : (
+					<Box textAlign="center" py={8}>
+						<Typography variant="h6" color="text.secondary">
+							Your cart is empty.
+						</Typography>
+					</Box>
+				)}
 				{cart.length > 0 && (
 					<Box
 						sx={{
