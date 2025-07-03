@@ -54,5 +54,22 @@ export function useGuestCart() {
 		setCart([]);
 	}, []);
 
-	return { cart, itemCount, addItem, removeItem, clearCart };
+	const decrementItem = useCallback((itemId: string, variant?: string | null) => {
+		setCart((prev) => {
+			const idx = prev.findIndex(
+				(i) => i.itemId === itemId && (i.variant ?? null) === (variant ?? null)
+			);
+			if (idx === -1) return prev;
+			const item = prev[idx];
+			if ((item.quantity ?? 1) > 1) {
+				return prev.map((i, j) =>
+					j === idx ? { ...i, quantity: (i.quantity ?? 1) - 1 } : i
+				);
+			} else {
+				return prev.filter((_, j) => j !== idx);
+			}
+		});
+	}, []);
+
+	return { cart, itemCount, addItem, removeItem, clearCart, decrementItem };
 }

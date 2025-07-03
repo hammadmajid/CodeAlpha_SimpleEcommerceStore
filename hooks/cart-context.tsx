@@ -14,6 +14,7 @@ interface UnifiedCart {
 	addItem: (item: Item) => void;
 	removeItem: (itemId: string, variant?: string | null) => void;
 	clearCart: () => void;
+	decrementItem: (itemId: string, variant?: string | null) => void;
 	loading: boolean;
 }
 
@@ -63,6 +64,14 @@ function useUnifiedCart(): UnifiedCart {
 			}
 		},
 	});
+	const decrementMutation = api.cart.decrementItem.useMutation({
+		onSuccess: async () => {
+			if (userId) {
+				await utils.cart.getAll.invalidate({ userId });
+				await utils.cart.getItemsCount.invalidate({ userId });
+			}
+		},
+	});
 
 	if (enabled) {
 		return {
@@ -84,11 +93,20 @@ function useUnifiedCart(): UnifiedCart {
 				if (!userId) return;
 				clearMutation.mutate({ userId });
 			},
+			decrementItem: (itemId, variant) => {
+				if (!userId) return;
+				decrementMutation.mutate({
+					userId,
+					itemId,
+					variant: variant ?? undefined,
+				});
+			},
 			loading:
 				isLoading ||
 				insertMutation.isPending ||
 				removeMutation.isPending ||
-				clearMutation.isPending,
+				clearMutation.isPending ||
+				decrementMutation.isPending,
 		};
 	}
 

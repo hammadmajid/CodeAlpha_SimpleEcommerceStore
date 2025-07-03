@@ -22,7 +22,7 @@ interface CartListProps {
 }
 
 export default function CartList({ products, cart }: CartListProps) {
-	const { addItem, removeItem } = useCart();
+	const { addItem, removeItem, decrementItem } = useCart();
 
 	const handleIncrement = (itemId: string, variant?: string | null) => {
 		const item = cart.find(
@@ -34,14 +34,7 @@ export default function CartList({ products, cart }: CartListProps) {
 	};
 
 	const handleDecrement = (itemId: string, variant?: string | null) => {
-		const item = cart.find(
-			(i) => i.itemId === itemId && (variant ?? null) === (i.variant ?? null),
-		);
-		if (item && (item.quantity ?? 1) > 1) {
-			removeItem(itemId, variant);
-			// Add back with decremented quantity
-			addItem({ ...item, quantity: (item.quantity ?? 1) - 1 });
-		}
+		decrementItem(itemId, variant);
 	};
 
 	const handleRemove = (itemId: string, variant?: string | null) => {

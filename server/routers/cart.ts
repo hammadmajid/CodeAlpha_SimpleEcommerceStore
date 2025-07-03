@@ -84,4 +84,34 @@ export const cartRouter = createTRPCRouter({
 				where: { userId: input.userId },
 			});
 		}),
+
+	decrementItem: publicProcedure
+		.input(
+			z.object({
+				userId: z.string(),
+				itemId: z.string(),
+				variant: z.string().optional(),
+			}),
+		)
+		.mutation(async ({ ctx, input }) => {
+			const { userId, itemId, variant } = input;
+			const item = await ctx.db.cartItem.findFirst({
+				where: {
+					userId,
+					itemId,
+					variant: variant ?? null,
+				},
+			});
+			if (!item) return;
+			if ((item.quantity ?? 1) > 1) {
+				await ctx.db.cartItem.update({
+					where: { userId_itemId: { userId, itemId } },
+					data: { quantity: { decrement: 1 } },
+				});
+			} else {
+				await ctx.db.cartItem.deleteMany({
+					where: { userId, itemId, variant: variant ?? null },
+				});
+			}
+		}),
 });
