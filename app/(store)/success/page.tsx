@@ -1,10 +1,44 @@
+"use client";
+
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
-import { CheckSquareIcon } from "@phosphor-icons/react/dist/ssr/CheckSquare";
+import { CheckSquareIcon } from "@phosphor-icons/react/dist/csr/CheckSquare";
 import Link from "next/link";
+import { useEffect } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { api } from "@/trpc/react";
+import { useCart } from "@/hooks/cart-context";
 
 export default function SuccessPage() {
+	const searchParams = useSearchParams();
+	const sessionId = searchParams.get("session_id");
+	const { clearCart } = useCart();
+	const router = useRouter();
+
+	const { data, isLoading, isError } = api.payment.getSession.useQuery(
+		{ sessionId: sessionId ?? "" },
+		{ enabled: !!sessionId },
+	);
+
+	useEffect(() => {
+		if (!sessionId || isError) {
+			router.replace("/failed");
+			return;
+		}
+		if (data && data.payment_status === "paid") {
+			clearCart();
+		}
+	}, [sessionId, isError, data, clearCart, router]);
+
+	if (!sessionId) {
+		return null;
+	}
+
+	if (isLoading) {
+		return <Typography>Verifying payment...</Typography>;
+	}
+
 	return (
 		<Container
 			maxWidth="sm"
