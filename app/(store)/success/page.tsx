@@ -1,7 +1,7 @@
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
-// import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import { CheckSquareIcon } from "@phosphor-icons/react/dist/ssr/CheckSquare";
 import Link from "next/link";
 
 export default function SuccessPage() {
@@ -9,7 +9,8 @@ export default function SuccessPage() {
 		<Container
 			maxWidth="sm"
 			sx={{
-				py: 8,
+				py: 10,
+				my: 10,
 				textAlign: "center",
 				background: "#fff",
 				border: "4px solid #000",
@@ -17,30 +18,29 @@ export default function SuccessPage() {
 				boxShadow: "8px 8px 0 #000",
 			}}
 		>
-			{/* <CheckCircleIcon sx={{ fontSize: 64, color: "#00c853", mb: 2 }} /> */}
+			<CheckSquareIcon size="64" />
 			<Typography
 				variant="h3"
 				fontWeight={900}
 				gutterBottom
-				sx={{ letterSpacing: 2 }}
+				sx={{ letterSpacing: 2, mt: 2 }}
 			>
 				Payment Successful!
 			</Typography>
-			<Typography variant="h6" color="text.secondary" sx={{ mb: 4 }}>
+			<Typography variant="h6" color="text.secondary" sx={{ mb: 6, mt: 2 }}>
 				Thank you for your purchase. Your order is being processed.
 			</Typography>
 			<Button
 				component={Link}
 				href="/"
 				variant="contained"
+				color="primary"
 				sx={{
-					background: "#fff",
-					color: "#000",
 					border: "2px solid #000",
 					boxShadow: "4px 4px 0 #000",
 					fontWeight: 700,
 					"&:hover": {
-						background: "#f5f5f5",
+						background: "#1976d2",
 						boxShadow: "2px 2px 0 #000",
 					},
 				}}
