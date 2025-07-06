@@ -16,12 +16,8 @@ export default function CheckoutButton({
 	cart,
 	products,
 }: CheckoutButtonProps) {
-	const { userId, isSignedIn } = useAuth();
+	const { userId, isSignedIn, isLoaded } = useAuth();
 	const router = useRouter();
-
-	if (!isSignedIn) {
-		return <></>;
-	}
 
 	let total = 0;
 	if (products) {
@@ -43,6 +39,32 @@ export default function CheckoutButton({
 			router.push("/failed");
 		},
 	});
+
+	if (!isSignedIn || !isLoaded) {
+		return (
+			<Box
+				sx={{
+					mt: 4,
+					display: "flex",
+					flexDirection: "column",
+				}}
+			>
+				<Divider sx={{ width: "100%", mb: 2 }} />
+				<Typography variant="subtitle1" sx={{ fontWeight: 600, mb: 2 }}>
+					Total: ${total.toFixed(2)}
+				</Typography>
+				<Button
+					variant="contained"
+					color="primary"
+					size="large"
+					disabled
+					sx={{ minWidth: 180, fontWeight: 600 }}
+				>
+					Sign In to checkout
+				</Button>
+			</Box>
+		);
+	}
 
 	const handleCheckout = () => {
 		mutation.mutate({
