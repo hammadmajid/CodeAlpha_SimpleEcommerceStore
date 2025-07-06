@@ -1,7 +1,10 @@
+"use client";
+
 import { Box, Button, Divider, Typography } from "@mui/material";
 import type { Item } from "@/lib/cart";
 import { api, type RouterOutputs } from "@/trpc/react";
 import { buildStripeLineItems } from "@/utils/stripe";
+import { useRouter } from "next/navigation";
 import { useAuth } from "@clerk/nextjs";
 
 interface CheckoutButtonProps {
@@ -14,6 +17,7 @@ export default function CheckoutButton({
 	products,
 }: CheckoutButtonProps) {
 	const { userId, isSignedIn } = useAuth();
+	const router = useRouter();
 
 	if (!isSignedIn) {
 		return <></>;
@@ -35,10 +39,13 @@ export default function CheckoutButton({
 				window.location.href = data.url;
 			}
 		},
+		onError: () => {
+			router.push("/failed");
+		},
 	});
 
 	const handleCheckout = () => {
-		checkoutMutation.mutate({
+		mutation.mutate({
 			userId,
 			lineItems,
 		});
