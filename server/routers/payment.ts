@@ -32,6 +32,13 @@ export const paymentRouter = createTRPCRouter({
 				metadata: { userId },
 			});
 
+			await ctx.db.order.create({
+				data: {
+					sessionId: session.id,
+					userId,
+				},
+			});
+
 			return { id: session.id, url: session.url };
 		}),
 
