@@ -70,7 +70,6 @@ export default function CheckoutButton({
 		mutation.mutate({
 			userId,
 			lineItems,
-			cartItems: cart,
 		});
 	};
 
