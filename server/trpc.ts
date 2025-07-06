@@ -3,11 +3,13 @@ import db from "@/lib/prisma";
 import superjson from "superjson";
 import { ZodError } from "zod";
 import { client } from "@/sanity/lib/client";
+import stripe from "@/lib/stripe";
 
 export const createTRPCContext = async (opts: { headers: Headers }) => {
 	return {
 		sanity: client,
 		db,
+		stripe,
 		...opts,
 	};
 };

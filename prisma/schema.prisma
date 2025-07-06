@@ -20,6 +20,19 @@ model CartItem {
   quantity Int     @default(1)
   variant  String?
 
+  order   Order?  @relation(fields: [orderId], references: [orderId])
+  orderId String? @map("order_id")
+
   @@id([userId, itemId])
   @@map("cart_items")
+}
+
+model Order {
+  orderId   String     @id @default(uuid()) @map("order_id")
+  cartItems CartItem[]
+
+  createdAt DateTime @default(now()) @map("created_at")
+  status    String
+
+  @@map("orders")
 }
