@@ -29,7 +29,13 @@ export default function CheckoutButton({
 	}
 
 	const lineItems = buildStripeLineItems(cart, products);
-	const checkoutMutation = api.payment.checkout.useMutation();
+	const mutation = api.payment.checkout.useMutation({
+		onSuccess: (data) => {
+			if (data.url) {
+				window.location.href = data.url;
+			}
+		},
+	});
 
 	const handleCheckout = () => {
 		checkoutMutation.mutate({
