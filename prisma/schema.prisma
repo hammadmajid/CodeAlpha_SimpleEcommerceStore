@@ -23,3 +23,10 @@ model CartItem {
   @@id([userId, itemId])
   @@map("cart_items")
 }
+
+model Order {
+  sessionId String @id @map("session_id") // Stripe session id
+  userId    String @map("user_id")
+
+  @@map("orders")
+}
