@@ -42,35 +42,47 @@ export const paymentRouter = createTRPCRouter({
 			return { id: session.id, url: session.url };
 		}),
 
-	getOrder: publicProcedure
-		.input(z.object({ sessionId: z.string() }))
+	getOrders: publicProcedure
+		.input(z.object({ userId: z.string() }))
 		.query(async ({ input, ctx }) => {
-			const session = await ctx.stripe.checkout.sessions.retrieve(
-				input.sessionId,
-				{
-					expand: [
-						"line_items.data.price.product",
-						"customer",
-						"payment_intent",
-					],
-				},
+			const orders = await ctx.db.order.findMany({
+				where: { userId: input.userId },
+			});
+
+			if (!orders || orders.length === 0) {
+				return [];
+			}
+
+			const ordersData = await Promise.all(
+				orders.map(async (order) => {
+					const session = await ctx.stripe.checkout.sessions.retrieve(
+						order.sessionId,
+						{
+							expand: [
+								"line_items.data.price.product",
+								"customer",
+								"payment_intent",
+							],
+						},
+					);
+
+					return {
+						id: session.id,
+						status: session.payment_status,
+						userId: session.metadata?.userId,
+						items: session.line_items?.data.map((item) => ({
+							productId: item.price?.product,
+							quantity: item.quantity,
+							amount: item.amount_total,
+							description: item.description,
+						})),
+						total: session.amount_total,
+						currency: session.currency,
+						createdAt: new Date(session.created * 1000),
+					};
+				}),
 			);
 
-			const orderData = {
-				id: session.id,
-				status: session.payment_status,
-				userId: session.metadata?.userId,
-				items: session.line_items?.data.map((item) => ({
-					productId: item.price?.product,
-					quantity: item.quantity,
-					amount: item.amount_total,
-					description: item.description,
-				})),
-				total: session.amount_total,
-				currency: session.currency,
-				createdAt: new Date(session.created * 1000),
-			};
-
-			return orderData;
+			return ordersData;
 		}),
 });
