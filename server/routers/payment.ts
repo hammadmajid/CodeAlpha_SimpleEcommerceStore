@@ -34,4 +34,36 @@ export const paymentRouter = createTRPCRouter({
 
 			return { id: session.id, url: session.url };
 		}),
+
+	getOrder: publicProcedure
+		.input(z.object({ sessionId: z.string() }))
+		.query(async ({ input, ctx }) => {
+			const session = await ctx.stripe.checkout.sessions.retrieve(
+				input.sessionId,
+				{
+					expand: [
+						"line_items.data.price.product",
+						"customer",
+						"payment_intent",
+					],
+				},
+			);
+
+			const orderData = {
+				id: session.id,
+				status: session.payment_status,
+				userId: session.metadata?.userId,
+				items: session.line_items?.data.map((item) => ({
+					productId: item.price?.product,
+					quantity: item.quantity,
+					amount: item.amount_total,
+					description: item.description,
+				})),
+				total: session.amount_total,
+				currency: session.currency,
+				createdAt: new Date(session.created * 1000),
+			};
+
+			return orderData;
+		}),
 });
