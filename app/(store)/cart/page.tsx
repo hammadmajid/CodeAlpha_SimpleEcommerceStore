@@ -10,14 +10,15 @@ export default function CartPage() {
 	const { cart } = useCart();
 
 	const slugs = cart.map((cartItem) => cartItem.slug);
-	const { data: products } = api.inventory.getProductsBySlugs.useQuery(
-		{
-			slugs,
-		},
-		{
-			enabled: cart.length > 0, // prevents SSR error during build
-		},
-	);
+	const { data: products, isLoading } =
+		api.inventory.getProductsBySlugs.useQuery(
+			{
+				slugs,
+			},
+			{
+				enabled: cart.length > 0, // prevents SSR error during build
+			},
+		);
 
 	return (
 		<main>
@@ -40,7 +41,13 @@ export default function CartPage() {
 					Review your selected items and proceed to checkout
 				</Typography>
 
-				{products && products.length > 0 ? (
+				{isLoading ? (
+					<Box textAlign="center" py={8}>
+						<Typography variant="h6" color="text.secondary">
+							Loading...
+						</Typography>
+					</Box>
+				) : products && products.length > 0 ? (
 					<CartList products={products} cart={cart} />
 				) : (
 					<Box textAlign="center" py={8}>
