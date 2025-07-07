@@ -12,8 +12,9 @@ import {
 } from "@mui/material";
 import { useAuth } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
+import type { Order, OrderItem as OrderItemType } from "@/types/item";
 
-function OrderItem({ order }: { order: any }) {
+function OrderItem({ order }: { order: Order }) {
 	return (
 		<Card sx={{ mb: 3 }}>
 			<CardContent>
@@ -39,7 +40,7 @@ function OrderItem({ order }: { order: any }) {
 					Items:
 				</Typography>
 				<List disablePadding>
-					{order.items?.map((item: any) => (
+					{order.items?.map((item: OrderItemType) => (
 						<ListItem
 							key={String(item.productId) + String(item.description)}
 							sx={{ pl: 0 }}
@@ -110,9 +111,23 @@ export default function CheckoutPage() {
 				</Typography>
 				{orders && orders.length > 0 ? (
 					<List>
-						{orders.map((order) => (
-							<OrderItem key={order.id} order={order} />
-						))}
+						{orders.map((order) => {
+							const mappedOrder: Order = {
+								...order,
+								items: order.items?.map((item) => ({
+									...item,
+									productId:
+										typeof item.productId === "string"
+											? item.productId
+											: item.productId && "id" in item.productId
+												? (item.productId as { id: string }).id
+												: item.productId === undefined
+													? null
+													: String(item.productId),
+								})),
+							};
+							return <OrderItem key={order.id} order={mappedOrder} />;
+						})}
 					</List>
 				) : (
 					<Box textAlign="center" py={8}>
