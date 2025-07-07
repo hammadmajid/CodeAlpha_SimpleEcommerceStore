@@ -13,6 +13,7 @@ import {
 import { useAuth } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 import type { Order, OrderItem as OrderItemType } from "@/types/item";
+import { useEffect } from "react";
 
 function OrderItem({ order }: { order: Order }) {
 	return (
@@ -68,16 +69,13 @@ export default function OrdersPage() {
 	const { userId, isSignedIn, isLoaded } = useAuth();
 	const router = useRouter();
 
-	if (!isSignedIn) {
-		return router.push("/");
-	}
+	useEffect(() => {
+		if (!isSignedIn) {
+			router.push("/");
+		}
+	}, [isSignedIn, router]);
 
-	const { data: orders, isLoading } = api.payment.getOrders.useQuery(
-		{ userId },
-		{ enabled: !!userId },
-	);
-
-	if (!isLoaded || isLoading) {
+	if (!userId || !isLoaded) {
 		return (
 			<main>
 				<Box textAlign="center" py={8}>
@@ -88,6 +86,11 @@ export default function OrdersPage() {
 			</main>
 		);
 	}
+
+	const { data: orders } = api.payment.getOrders.useQuery(
+		{ userId },
+		{ enabled: !!userId },
+	);
 
 	return (
 		<main>
