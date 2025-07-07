@@ -64,7 +64,7 @@ function OrderItem({ order }: { order: Order }) {
 	);
 }
 
-export default function CheckoutPage() {
+export default function OrdersPage() {
 	const { userId, isSignedIn, isLoaded } = useAuth();
 	const router = useRouter();
 
