@@ -69,7 +69,7 @@ export const paymentRouter = createTRPCRouter({
 					return {
 						id: session.id,
 						status: session.payment_status,
-						userId: session.metadata?.userId,
+						userId: order.userId,
 						items: session.line_items?.data.map((item) => ({
 							productId: item.price?.product,
 							quantity: item.quantity,
