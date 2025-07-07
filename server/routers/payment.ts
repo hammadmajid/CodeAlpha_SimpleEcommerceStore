@@ -2,7 +2,6 @@ import { z } from "zod";
 
 import { createTRPCRouter, publicProcedure } from "@/server/trpc";
 import { stripeLineItemsSchema } from "@/utils/stripe";
-import { itemSchema } from "@/lib/cart";
 
 export const paymentRouter = createTRPCRouter({
 	getSession: publicProcedure
@@ -19,11 +18,10 @@ export const paymentRouter = createTRPCRouter({
 			z.object({
 				userId: z.string(),
 				lineItems: stripeLineItemsSchema,
-				cartItems: z.array(itemSchema),
 			}),
 		)
 		.mutation(async ({ ctx, input }) => {
-			const { userId, lineItems, cartItems } = input;
+			const { userId, lineItems } = input;
 
 			const session = await ctx.stripe.checkout.sessions.create({
 				payment_method_types: ["card"],
@@ -36,19 +34,55 @@ export const paymentRouter = createTRPCRouter({
 
 			await ctx.db.order.create({
 				data: {
-					status: "pending",
-					cartItems: {
-						create: cartItems.map((item) => ({
-							userId,
-							itemId: item.itemId,
-							slug: item.slug,
-							quantity: item.quantity ?? 1,
-							variant: item.variant ?? undefined,
-						})),
-					},
+					sessionId: session.id,
+					userId,
 				},
 			});
 
 			return { id: session.id, url: session.url };
+		}),
+
+	getOrders: publicProcedure
+		.input(z.object({ userId: z.string() }))
+		.query(async ({ input, ctx }) => {
+			const orders = await ctx.db.order.findMany({
+				where: { userId: input.userId },
+			});
+
+			if (!orders || orders.length === 0) {
+				return [];
+			}
+
+			const ordersData = await Promise.all(
+				orders.map(async (order) => {
+					const session = await ctx.stripe.checkout.sessions.retrieve(
+						order.sessionId,
+						{
+							expand: [
+								"line_items.data.price.product",
+								"customer",
+								"payment_intent",
+							],
+						},
+					);
+
+					return {
+						id: session.id,
+						status: session.payment_status,
+						userId: order.userId,
+						items: session.line_items?.data.map((item) => ({
+							productId: item.price?.product,
+							quantity: item.quantity,
+							amount: item.amount_total,
+							description: item.description,
+						})),
+						total: session.amount_total,
+						currency: session.currency,
+						createdAt: new Date(session.created * 1000),
+					};
+				}),
+			);
+
+			return ordersData;
 		}),
 });
