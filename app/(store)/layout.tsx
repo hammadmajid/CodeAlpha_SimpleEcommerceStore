@@ -9,6 +9,7 @@ import { ClerkProvider } from "@clerk/nextjs";
 import { TRPCReactProvider } from "@/trpc/react";
 import { neobrutalism } from "@clerk/themes";
 import { CartProvider } from "@/hooks/cart-context";
+import Footer from "@/components/footer";
 
 const roboto = Roboto({
 	weight: ["300", "400", "500", "700"],
@@ -46,6 +47,7 @@ export default function RootLayout({
 								<CartProvider>
 									<Header />
 									{children}
+									<Footer />
 								</CartProvider>
 							</TRPCReactProvider>
 						</ClerkProvider>
