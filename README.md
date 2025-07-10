@@ -1,6 +1,4 @@
-# CodeAlpha_SimpleEcommerceStore
-
-## 🛍️ Simple E-commerce Store - CodeAlpha Internship Task 1
+# PREPEN 🛍️ Simple E-commerce Store 
 
 A modern, full-stack e-commerce platform built with Next.js, featuring product listings, shopping cart functionality, order processing, and user authentication.
 
@@ -38,8 +36,8 @@ A modern, full-stack e-commerce platform built with Next.js, featuring product l
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/hammadmajid/CodeAlpha_SimpleEcommerceStore.git
-   cd CodeAlpha_SimpleEcommerceStore
+   git clone https://github.com/hammadmajid/prepen.git
+   cd prepen
    ```
 
 2. **Install dependencies**
@@ -130,24 +128,6 @@ The application is fully responsive and optimized for:
 - **Environment Variables**: Sensitive data protection
 - **HTTPS**: SSL/TLS encryption in production
 
-### 📊 Performance Optimizations
+## 🖹 License 
 
-- **Next.js App Router**: Server-side rendering and static generation
-- **Code Splitting**: Automatic code splitting for better performance
-- **Caching**: Efficient caching strategies using React Query
-- **Database Optimization**: Optimized queries with Prisma
-
-### 🎯 CodeAlpha Internship Compliance
-
-This project fulfills all requirements for CodeAlpha Task 1:
-- ✅ Basic e-commerce site with product listings
-- ✅ Shopping cart functionality
-- ✅ Product details page
-- ✅ Order processing system
-- ✅ User registration/login
-- ✅ Database for products(Sanity), users(Clerk), and orders(Supabase)
-- ✅ Modern full-stack implementation
-
----
-
-*Built with ❤️ as part of CodeAlpha Internship Program*
+See the MIT license details in `./LICENSE` file.
